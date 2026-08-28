@@ -12,10 +12,10 @@ description: 为 wps.cn 生成 WPS SEO 组别关键词周度规划。当用户�
 ## 自动更新检查（每次调用本技能，先执行这一步）
 
 ```bash
-python scripts/update_check.py --force
+python scripts/update_check.py
 ```
 
-- 有 24h 本地缓存，未过期直接读缓存（几乎无感）
+- 有 24h 本地缓存，未过期直接读缓存（几乎无感）；如需强制刷新可先删除本地缓存再运行
 - 输出“发现新版本 vX.Y.Z”时：向用户提示新版本与更新摘要（CHANGELOG），征询后执行 `python scripts/update_check.py --update` 完成更新
 - 输出“已是最新”或“远程不可达”时静默继续，不阻塞规划任务
 - 版本仓库：`tongxiaoshan1995-dot/wps-seo-skills`（多技能统一仓库，本技能为子目录，SUBDIR 自动适配）

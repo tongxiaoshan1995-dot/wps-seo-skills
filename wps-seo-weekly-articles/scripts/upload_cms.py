@@ -349,18 +349,22 @@ def main():
             print("  [提示] 未配置图片方案（--image-map 或 --cookie），正文图片保持相对路径（发布前需补图）")
         post_html = replaced
 
-        # 封面图：优先用图床 URL（image-map 按文件名匹配），否则尝试 CMS 上传；失败降级留空不阻断草稿
+        # 封面图：优先用图床 URL（image-map 按相对 base_dir 路径匹配，与正文一致），否则 basename 兜底/CMS 上传
         cover_url = None
         if meta.get("image"):
             cover_src = meta["image"]
-            bmap = {os.path.basename(k): v for k, v in image_map.items()}
-            if image_map and os.path.basename(cover_src) in bmap:
-                cover_url = bmap[os.path.basename(cover_src)]
+            _base = os.path.abspath(args.articles_dir)
+            _local = os.path.join(slug_dir, cover_src)
+            _key = os.path.relpath(_local, _base).replace("\\", "/") if os.path.isfile(_local) else None
+            if image_map and _key and _key in image_map:
+                cover_url = image_map[_key]
             else:
-                local_cover = os.path.join(slug_dir, cover_src)
-                if os.path.isfile(local_cover):
+                bmap = {os.path.basename(k): v for k, v in image_map.items()}
+                if image_map and os.path.basename(cover_src) in bmap:
+                    cover_url = bmap[os.path.basename(cover_src)]
+                elif os.path.isfile(_local):
                     try:
-                        _p, cover_url = upload_image(client, local_cover)
+                        _p, cover_url = upload_image(client, _local)
                     except SystemExit:
                         print("  [提示] 封面图上传失败，封面留空（CMS 图片接口需后台登录态，已改用图床 URL 更佳）")
 
