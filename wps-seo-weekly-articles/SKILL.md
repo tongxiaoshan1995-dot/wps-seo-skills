@@ -22,10 +22,10 @@ description: 为 wps.cn 按周批量生成 SEO 图文文章并上传 CMS 草稿�
 ### 第 0 步：自动更新检查（每次调用本技能，先执行这一步）
 
 ```bash
-python scripts/update_check.py --force
+python scripts/update_check.py
 ```
 
-- 有 24h 本地缓存，未过期直接读缓存（几乎无感）；`--force` 确保拿到最新结果
+- 有 24h 本地缓存，未过期直接读缓存（几乎无感）；如需强制刷新可先删除本地缓存再运行
 - **输出“发现新版本 vX.Y.Z”时**：先向用户明确提示「技能有新版本 vX.Y.Z，更新内容：<CHANGELOG 摘要>」，征询是否更新；用户同意后执行 `python scripts/update_check.py --update` 完成更新，并告知已生效（灵犀下次加载即用新版）
 - 输出“已是最新”或“远程不可达”（网络异常）时静默继续，不阻塞任务
 
