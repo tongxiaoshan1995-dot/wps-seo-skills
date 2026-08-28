@@ -201,9 +201,11 @@ def update():
             src = os.path.join(src_root, item)
             dst = os.path.join(SKILL_DIR, item)
             if os.path.isdir(src):
+                # 覆盖式合并：只覆盖写同名文件，不删除本地旧文件（避免触发删除拦截；远程删除的文件本地会残留，可手动清理）
                 if os.path.isdir(dst):
-                    shutil.rmtree(dst)
-                shutil.copytree(src, dst)
+                    shutil.copytree(src, dst, dirs_exist_ok=True)
+                else:
+                    shutil.copytree(src, dst)
             else:
                 shutil.copy2(src, dst)
             updated.append(item)
