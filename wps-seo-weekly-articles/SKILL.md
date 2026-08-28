@@ -62,7 +62,7 @@ python scripts/fetch_pool.py --keywords "WPS下载,PDF转Word" --group 格式转
 - 风格：CMS 独立站、官方口吻、500–2000 字、严格去 AI 味（逐条对照 style-guide 的检查清单 + **参考 `assets/examples/` 下 4 篇优质案例文风**：短疑问句连击开头、痛点场景+具体案例、功能价值优先入口收尾；不学文末互动）
 - 配图：优先从素材原文/官方站点截取真实产品截图，其次 AI 生成示意插图；封面图在 frontmatter `image` 声明，正文图用 `![alt](img/xxx.jpg)` 引用，alt 含关键词
 - **正文页不含下载 CTA**（结构最终参照草稿 2666：封面图 + 图文 + FAQ）
-- **智能标签**：Agent 按文章内容/关键词/组别生成 3-5 个标签，写入 frontmatter `tags`；可参考 CMS 热门标签库（办公效率/表格函数/Excel/PPT/WPS Office/在线文档/云办公 等）；`upload_cms` 自动写入 CMS `Tags` 字段（后台智能标签为界面功能，OpenAPI 不提供，本方案为等价自动打标）
+- **智能标签**：Agent 按文章内容/关键词/组别生成 3-5 个标签，写入 frontmatter `tags`；**优先从 `references/tag-library.md` 的 105 个 CMS 真实热门标签挑选**（结构化数据 `assets/data/tags.json`）；`upload_cms` 自动写入 CMS `Tags` 字段（后台智能标签为界面功能，OpenAPI 不提供，本方案为等价自动打标）
 
 ### 第 4 步：渲染 HTML 图文单页
 
