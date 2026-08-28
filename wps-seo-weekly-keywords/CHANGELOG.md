@@ -2,6 +2,12 @@
 
 本文记录 wps-seo-weekly-keywords 技能的版本变更。每次发布前递增 `VERSION` 并在此追加记录，供订阅者查看更新内容。
 
+## 1.1.0 (2026-08-28)
+
+**机制增强**：加入“自动更新提醒”——每次调用本技能先执行 `update_check.py --force`，GitHub 有新版本时向用户提示并支持一键更新。
+- SKILL.md 新增「自动更新检查」章节
+- 版本仓库统一为多技能仓库 `tongxiaoshan1995-dot/wps-seo-skills`
+
 ## 1.0.0 (2026-08-27)
 
 首次正式发布，纳入 `wps-seo-skills` 多技能版本仓库，接入 `update_check.py` 更新机制。

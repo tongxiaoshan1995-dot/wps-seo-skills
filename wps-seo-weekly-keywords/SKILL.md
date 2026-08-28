@@ -9,6 +9,17 @@ description: 为 wps.cn 生成 WPS SEO 组别关键词周度规划。当用户�
 
 一键输出"当周该写哪些关键词"的规划表：10 个策略组别 × 每组 5 词 = 50 词/周，覆盖《WPS_SEO完整关键词库》全部 12166 词，关键词按价值从高到低排列，自动跨周去重（每次调用与上一次建议不重复）。
 
+## 自动更新检查（每次调用本技能，先执行这一步）
+
+```bash
+python scripts/update_check.py --force
+```
+
+- 有 24h 本地缓存，未过期直接读缓存（几乎无感）
+- 输出“发现新版本 vX.Y.Z”时：向用户提示新版本与更新摘要（CHANGELOG），征询后执行 `python scripts/update_check.py --update` 完成更新
+- 输出“已是最新”或“远程不可达”时静默继续，不阻塞规划任务
+- 版本仓库：`tongxiaoshan1995-dot/wps-seo-skills`（多技能统一仓库，本技能为子目录，SUBDIR 自动适配）
+
 ## 数据源
 
 - 完整词库：`wps_final_kw.csv`（12166 词，含 一级分类 / 二级主题 / 搜索意图 / GEO机会值 / 第三方流量指数 / 百度统计PV）

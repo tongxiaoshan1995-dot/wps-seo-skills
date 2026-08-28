@@ -17,7 +17,17 @@ description: 为 wps.cn 按周批量生成 SEO 图文文章并上传 CMS 草稿�
 - 每个组别保证至少 1 篇：若用户提供的词集中在某几组，其余组别由 AI 依据用户意图或从词库补充，并向用户说明
 - **可选兜底**：用户没有现成词表时，才用 `scripts/pick_keywords.py` 自动挑词（按组别 + 指定指标 + 跨周去重）
 
-## 工作流（5 步）
+## 工作流（第 0 步自动更新检查 + 5 步）
+
+### 第 0 步：自动更新检查（每次调用本技能，先执行这一步）
+
+```bash
+python scripts/update_check.py --force
+```
+
+- 有 24h 本地缓存，未过期直接读缓存（几乎无感）；`--force` 确保拿到最新结果
+- **输出“发现新版本 vX.Y.Z”时**：先向用户明确提示「技能有新版本 vX.Y.Z，更新内容：<CHANGELOG 摘要>」，征询是否更新；用户同意后执行 `python scripts/update_check.py --update` 完成更新，并告知已生效（灵犀下次加载即用新版）
+- 输出“已是最新”或“远程不可达”（网络异常）时静默继续，不阻塞任务
 
 ### 第 1 步：整理本周关键词清单
 
@@ -83,16 +93,18 @@ python scripts/upload_cms.py --host https://www.wps.cn/article --token <TOKEN> -
 - 若 CMS 后台需要登录/验证码，按 browser 技能规则用 `ask_user_question` 征询用户接管
 - 完成后向用户汇报：已创建 N 篇草稿（链接列表）、均为草稿未发布
 
-## 更新检查（本技能已接入 GitHub 版本仓库）
+## 自动更新检查机制（用户灵犀如何收到更新提醒）
 
-- **版本仓库**：`tongxiaoshan1995-dot/wps-seo-weekly-articles`（唯一版本源，存技能源文件 + VERSION + CHANGELOG.md）
-- **检查/更新**（结果缓存 24h，几乎无感）：
+**核心：技能每次被调用时自动检查 GitHub 版本仓库，有新版本即向用户提示并可一键更新。**（技能无后台推送通道，提醒发生在“调用技能”时，见第 0 步）
+
+- **版本仓库**：`tongxiaoshan1995-dot/wps-seo-skills`（多技能统一仓库，本技能为子目录，SUBDIR 自动适配）
+- 手动命令：
   ```bash
-  python scripts/update_check.py            # 仅检查是否有新版本
-  python scripts/update_check.py --update   # 有新版时一键更新
+  python scripts/update_check.py            # 仅检查
+  python scripts/update_check.py --update   # 一键更新
+  python scripts/update_check.py --init <目录>  # 首次安装克隆
   ```
 - **维护者每次发布**：递增 `VERSION` → `CHANGELOG.md` 追加记录 → `git commit && git push` →（云端已部署那份再“上传到云端”覆盖一次）
-- **订阅者（朋友）首次安装**：`python scripts/update_check.py --init <目录>` 克隆仓库 → 灵犀「技能—我的技能」本地导入；之后运行 `--update` 即同步最新
 - 发布/订阅完整流程见 `references/release.md`
 
 ## 快速开始
