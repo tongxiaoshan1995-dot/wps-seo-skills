@@ -1,0 +1,18 @@
+# 根仓库忽略项
+# 各技能内的 git 元数据残留（改名目录，防止误入仓库）
+**/.git_old/
+**/.git_backup/
+**/.git/
+
+# 运行态 / 本地产物
+__pycache__/
+*.pyc
+.rundata/
+.remote_head
+output/
+*.skill
+image-map.json
+
+# 系统文件
+Thumbs.db
+.DS_Store
