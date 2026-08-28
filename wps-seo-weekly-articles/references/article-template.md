@@ -64,6 +64,8 @@ sources:
 
 ## 配图插入
 
+配图**一律使用真实产品截图**（来源与取图步骤见 style-guide 第 7 节：先用 `scripts/fetch_images.py` 从资源池素材原文提取，提取不到用 browser 截图兑底，禁用 AI 示意图）。
+
 正文中直接使用相对路径引用：
 
 ```markdown

@@ -60,7 +60,7 @@ python scripts/fetch_pool.py --keywords "WPS下载,PDF转Word" --group 格式转
 - 每篇一个文件夹 `output/第N周/<slug>/`，内含 `article.md`（frontmatter + Markdown 正文）与 `img/`（配图）
 - 结构必含：封面图（frontmatter `image`）→ 正文分段（每关键段落配图）→ FAQ（3–5 条）；标题写在 frontmatter（CMS Title 字段管理），正文页不渲染标题
 - 风格：CMS 独立站、官方口吻、500–2000 字、严格去 AI 味（逐条对照 style-guide 的检查清单 + **参考 `assets/examples/` 下 4 篇优质案例文风**：短疑问句连击开头、痛点场景+具体案例、功能价值优先入口收尾；不学文末互动）
-- 配图：优先从素材原文/官方站点截取真实产品截图，其次 AI 生成示意插图；封面图在 frontmatter `image` 声明，正文图用 `![alt](img/xxx.jpg)` 引用，alt 含关键词
+- 配图：**一律使用真实产品截图**（禁用 AI 示意图，规范见 style-guide 第 7 节）——先跑 `scripts/fetch_images.py` 从资源池素材原文按来源优先级提取真实界面截图，提取不到再用 browser 打开 sourceUrl 截图兑底；封面图在 frontmatter `image` 声明，正文图用 `![alt](img/xxx.jpg)` 引用，alt 含关键词
 - **正文页不含下载 CTA**（结构最终参照草稿 2666：封面图 + 图文 + FAQ）
 - **智能标签**：Agent 按文章内容/关键词/组别生成 3-5 个标签，写入 frontmatter `tags`；**优先从 `references/tag-library.md` 的 105 个 CMS 真实热门标签挑选**（结构化数据 `assets/data/tags.json`）；`upload_cms` 自动写入 CMS `Tags` 字段（后台智能标签为界面功能，OpenAPI 不提供，本方案为等价自动打标）
 
@@ -134,6 +134,10 @@ python scripts/build_html.py --articles-dir output/第3周
 | | `--status` | 草稿状态值（实测 `0`=草稿） |
 | | `--image-map` / `--no-images` | 图床 URL 映射（json）/ 跳过图片上传 |
 | | `--dry-run` | 试运行，不真正上传 |
+| fetch_images.py | `--urls` / `--source-type` | 素材原文链接列表 / 对应来源类型（WPS学堂/社区/客服中心/公众号/小绿书） |
+| | `--keywords` / `--pool-file` | 按关键词从资源池自动找素材（配合 fetch_pool 输出） |
+| | `--out` / `--prefix` / `--limit` | 输出目录 / 下载前缀 / 每 URL 最多图数 |
+| | `--dry-run` | 只列候选不下载 |
 | push_images.py | `--token` / `--images-dir` | GitHub PAT / 周目录（含各 `<slug>/img/`） |
 | | `--repo` / `--branch` | 图床仓库 owner/repo / 分支（默认 main） |
 | | `--out` / `--dry-run` | 生成 image-map.json / 试运行 |
@@ -146,7 +150,8 @@ python scripts/build_html.py --articles-dir output/第3周
 
 ### scripts/
 - `pick_keywords.py` — 从词库按 10 组别 + 指定指标挑词、跨周去重（**仅用户没有现成词表时兜底用**）
-- `fetch_pool.py` — 抓取 SEO 内容资源池并按关键词穷尽匹配素材（全字段扫描；来源优先级 WPS学堂>客服中心>小绿书>公众号>社区）
+- `fetch_pool.py` — 抓取 SEO 内容资源池并按关键词穷尽匹配素材（全字段扫描；来源优先级 WPS官方公众号>小绿书>WPS社区>WPS客服中心>WPS学堂）
+- `fetch_images.py` — 从资源池素材原文提取真实产品截图（按来源优先级选素材，自动过滤头像/图标/SVG 并处理防盗链；抓不到提示 browser 截图兑底）
 - `build_html.py` — 把文章渲染为 HTML 图文单页 + 周目录页
 - `push_images.py` — 把配图上传 GitHub 图床并生成 jsDelivr URL 映射（image-map.json）
 - `upload_cms.py` — 把渲染好的文章上传为 CMS 草稿（不发布，配图走图床 URL）

@@ -55,7 +55,7 @@
 
 - **标题**：写在 frontmatter（CMS Title 字段管理），含目标关键词，可带数字/痛点/场景，长度 15–30 字为宜；**正文页不渲染标题**。
 - **正文页（CMS Content）直接图文（结构最终参照草稿 2666）**：不渲染组别 tab、不渲染 H1 标题、不渲染日期与关键词、文末不加参考来源区块、**不含下载 CTA**；正文只保留封面图 + 图文段落 + FAQ。
-- **产品配图（对应文案段落）**：每个关键段落配一张图（真实产品截图优先，AI 示意图其次），图片 alt 含关键词。
+- **产品配图（对应文案段落）**：每个关键段落配一张图（一律真实产品截图，来源见第 7 节配图规范），图片 alt 含关键词。
 - **FAQ（3–5 条）**：真实高搜索意图的问答，直接给答案，抓取友好。
 - **智能标签（3–5 个）**：Agent 按文章内容/关键词/组别生成，写入 frontmatter `tags`；**优先从 `references/tag-library.md`（CMS 后台真实 105 个热门标签，含频次，结构化数据在 `assets/data/tags.json`）挑选**，再补充少量文章专属标签，避免生僻自造词；`upload_cms` 自动写入 CMS `Tags` 字段。
 
@@ -67,10 +67,18 @@
 - FAQ 放在正文之后、文末收尾之前，是独立区块。
 
 
-## 7. 配图规范
+## 7. 配图规范（一律真实截图，禁用 AI 示意图）
 
-- 优先：从资源池 sourceUrl 原文、官方站点截取**真实产品界面截图**（能体现步骤/效果）。
-- 其次：用图像生成工具生成示意插图（品牌蓝 #0061ff 基调、办公场景、与段落内容对应）。
+- **一律使用真实产品界面截图**，不使用 AI 生成示意图。
+- **取图优先级**：先跑 `scripts/fetch_images.py` 从资源池命中素材的 sourceUrl 原文批量提取正文截图（内部按素材来源优先级 WPS官方公众号 > 小绿书 > WPS社区 > WPS客服中心 > WPS学堂 选素材，自动过滤头像/徽章/图标/SVG 装饰并处理防盗链）：
+  ```bash
+  # 直接给素材原文链接 + 来源类型
+  python scripts/fetch_images.py --urls "https://www.wps.cn/learning/question/detail/id/1455.html" --source-type "WPS学堂" --out output/第N周/<slug>/img --prefix ocr
+  # 或按关键词从资源池自动找素材提取
+  python scripts/fetch_images.py --keywords "WPS怎么制作简历" --pool-file .rundata/pool_articles.json --out output/第N周/<slug>/img --prefix resume --limit 4
+  ```
+- **兜底**：脚本未提取到图的来源（公众号/小绿书/客服中心页面多为 JS 渲染），用 browser 打开 sourceUrl 原文，截取正文中的真实界面图。
+- 提取/截取的截图须人工核对：只保留能体现步骤/效果的**产品界面图**，删掉无关配图；`fetch_images.py` 会生成 `_image_sources.json` 记录每张图来源（供溯源）。
 - 至少 1 张封面主图；关键步骤段落各配 1 张。
 - 图片统一放 `img/` 目录，正文用 `![alt 文本](img/xxx.jpg)` 引用，alt 含关键词。
 
