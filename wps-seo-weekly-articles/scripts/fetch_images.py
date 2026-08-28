@@ -152,7 +152,7 @@ def extract_from_url(url, source_type=""):
     return uniq, note
 
 
-def download(img_url, out_dir, prefix, idx, referer=None, timeout=20):
+def download(img_url, out_dir, prefix, url_idx, idx, referer=None, timeout=20):
     try:
         hdrs = dict(HEADERS)
         if referer:
@@ -167,7 +167,7 @@ def download(img_url, out_dir, prefix, idx, referer=None, timeout=20):
             ext = ".jpg"
         if ext not in (".png", ".jpg", ".webp", ".gif"):
             ext = ".png"
-        name = f"{prefix}-{idx}{ext}"
+        name = f"{prefix}-{url_idx}-{idx}{ext}"
         with open(os.path.join(out_dir, name), "wb") as f:
             f.write(r.content)
         return name, "OK"
@@ -241,7 +241,7 @@ def main():
 
     print(f"共 {len(tasks)} 个素材原文待提取：")
     all_map = {}
-    for url, st in tasks:
+    for ui, (url, st) in enumerate(tasks, 1):
         if not url:
             print(f"  [跳过] 无 sourceUrl（来源 {st or '未知'}）")
             continue
@@ -259,7 +259,7 @@ def main():
                 print(f"      - {cu}")
                 all_map[cu] = url
                 continue
-            name, msg = download(cu, args.out, args.prefix, idx, referer=url)
+            name, msg = download(cu, args.out, args.prefix, ui, idx, referer=url)
             if name:
                 print(f"      [已下载] {name}  <- {cu[:90]}")
                 all_map[os.path.join(args.out, name)] = url

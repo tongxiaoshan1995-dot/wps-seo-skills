@@ -84,14 +84,19 @@ def push_by_api(owner, repo, token, branch, images_dir, rel_files, prefix, force
         url = f"https://api.github.com/repos/{owner}/{repo}/contents/{repo_path}"
         headers = {"Authorization": f"token {token}",
                    "Accept": "application/vnd.github+json", "User-Agent": "wps-seo-images"}
-        # 检查是否已存在
+        # 检查是否已存在；覆盖时需带旧文件 sha
         r = requests.get(url, headers=headers, timeout=60)
-        if r.status_code == 200 and not force:
-            print(f"  [跳过] {rel} 已存在")
-            continue
+        sha = None
+        if r.status_code == 200:
+            sha = (r.json() or {}).get("sha")
+            if not force:
+                print(f"  [跳过] {rel} 已存在")
+                continue
         with open(os.path.join(images_dir, rel), "rb") as f:
             content = base64.b64encode(f.read()).decode()
         body = {"message": f"add {repo_path}", "content": content, "branch": branch}
+        if sha:
+            body["sha"] = sha
         r2 = requests.put(url, json=body, headers=headers, timeout=120)
         if r2.status_code in (200, 201):
             print(f"  [OK] {rel}")
