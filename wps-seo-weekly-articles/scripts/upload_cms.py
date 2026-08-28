@@ -93,7 +93,7 @@ def parse_frontmatter(text):
         key = m.group(1)
         val = m.group(2).strip()
         if not val:
-            if key in ("faq", "sources"):
+            if key in ("faq", "sources", "tags"):
                 items = []
                 i += 1
                 while i < len(lines) and re.match(r"^\s*-\s", lines[i]):
@@ -371,10 +371,20 @@ def main():
             print(f"  [警告] 未找到分类 {cate_name}，跳过本篇（需先确认 CMS 分类）")
             continue
 
-        # 标签
-        tags = [kw] if kw else []
+        # 标签：frontmatter tags（Agent 写作时按内容生成）> 关键词 > --tags 附加，合并去重
+        tags = []
+        ft = meta.get("tags")
+        if isinstance(ft, list):
+            tags = [str(t).strip() for t in ft if str(t).strip()]
+        elif isinstance(ft, str) and ft.strip():
+            tags = [t.strip() for t in ft.split(",") if t.strip()]
+        if kw and kw not in tags:
+            tags.append(kw)
         if args.tags:
-            tags += [t.strip() for t in args.tags.split(",") if t.strip()]
+            for t in args.tags.split(","):
+                t = t.strip()
+                if t and t not in tags:
+                    tags.append(t)
 
         payload = {
             "Title": title,
