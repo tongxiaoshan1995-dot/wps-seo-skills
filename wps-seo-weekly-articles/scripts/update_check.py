@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""wps-seo-weekly-articles 技能：版本更新检查 / 一键更新。
+"""灵犀技能：版本更新检查 / 一键更新（多技能仓库，SUBDIR 自动适配）。
 
 用法:
   python scripts/update_check.py              # 仅检查是否有新版本（结果缓存 24h）
@@ -27,7 +27,7 @@ import time
 
 # ---------- 默认远程配置 ----------
 OWNER = "tongxiaoshan1995-dot"
-REPO = "wps-seo-weekly-articles"
+REPO = "wps-seo-skills"
 BRANCH = "main"
 
 # 技能根目录 = 本脚本的上级目录（scripts/ 的父目录）
@@ -178,7 +178,7 @@ def check(force=False):
 def render(cache, cached):
     local, remote, upd = cache["local"], cache["remote"], cache["has_update"]
     tag = "（缓存结果）" if cached else ""
-    log(f"[wps-seo-weekly-articles] 当前版本 v{local}，远程最新 v{remote}{tag}")
+    log(f"[{SUBDIR}] 当前版本 v{local}，远程最新 v{remote}{tag}")
     if upd:
         log("==> 发现新版本！可运行  python scripts/update_check.py --update  一键更新")
         head = fetch_changelog_head(OWNER, REPO, BRANCH)
