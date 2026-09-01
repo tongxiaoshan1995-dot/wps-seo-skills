@@ -1,6 +1,6 @@
 ---
 name: wps-seo-weekly-articles
-description: 为 wps.cn 按周批量生成 SEO 图文文章并上传 CMS 草稿箱（只存草稿、不发布）。当用户要求"按周生成SEO文章"、"本周写几篇SEO内容"、"把关键词写成图文文章"、"生成CMS图文稿"、"SEO文章写作"、"上传文章到CMS草稿"等时使用。输入为本周关键词清单（由用户直接提供，可选从《WPS_SEO完整关键词库》按 10 个策略组别——下载安装/价格购买/对比选择/模板获取/格式转换/故障解决/教程操作/功能认知/AI认知/品牌直达——自动挑词兜底），素材首选抓取 SEO 内容资源池（workbuddy.link），次选词库+网络搜索；每篇按 CMS 独立站风格、官方口吻、500-2000 字撰写，正文页结构最终参照草稿 2666（封面图 + 图文 + FAQ，不含组别 tab/标题/日期/参考来源/下载 CTA，标题由 CMS Title 字段管理），输出 HTML 图文单页并上传到 CMS 草稿箱（不发布，发布由用户手动完成）。
+description: 为 wps.cn 按周批量生成 SEO 图文文章并上传 CMS 草稿箱（只存草稿、不发布）。当用户要求"按周生成SEO文章"、"本周写几篇SEO内容"、"把关键词写成图文文章"、"生成CMS图文稿"、"SEO文章写作"、"上传文章到CMS草稿"等时使用。输入为本周关键词清单（由用户直接提供，可选从《WPS_SEO完整关键词库》按 10 个策略组别——下载安装/价格购买/对比选择/模板获取/格式转换/故障解决/教程操作/功能认知/AI认知/品牌直达——自动挑词兜底），素材首选抓取 SEO 内容资源池（金山多维表「WPS资源池」，由 AI 自动更新与梳理），次选词库+网络搜索；每篇按 CMS 独立站风格、官方口吻、500-2000 字撰写，正文页结构最终参照草稿 2666（封面图 + 图文 + FAQ，不含组别 tab/标题/日期/参考来源/下载 CTA，标题由 CMS Title 字段管理），输出 HTML 图文单页并上传到 CMS 草稿箱（不发布，发布由用户手动完成）。
 ---
 
 # WPS SEO 周度文章生成
@@ -45,7 +45,7 @@ python scripts/update_check.py
 python scripts/fetch_pool.py --keywords "WPS下载,PDF转Word" --group 格式转换 --out 素材匹配.md
 ```
 
-- 抓取 SEO 内容资源池 `articles_data.json`（默认 workbuddy.link，可用 `--pool-url` 换地址），本地缓存于 `.rundata/pool_articles.json`
+- 抓取 SEO 内容资源池（默认数据源为**金山多维表「WPS资源池」**，通过 wps_docs CLI 分页拉取；本地缓存于 `.rundata/pool_articles.json`；资源池不可达时可用 `--pool-url` 回退到 JSON 地址）
 - **穷尽检索**：对全字段（title + targetKeywords + notes + sourceUrl）扫描匹配，不遗漏直接相关素材；打分：`targetKeywords 命中(4/3分) > 全文本命中(3/2.6/2.2分) > 标题包含(2分) > pool/cmsTab 命中组别(1分)`；客服中心来源对故障解决组加权
 - **文章检索顺序优先级：WPS学堂 > WPS客服中心 > 小绿书 > WPS官方公众号 > WPS社区**（同分素材按此来源顺序 + P0/P1/P2 降序排列）
 - 输出每个关键词的匹配素材（ID/标题/内容池/CMS Tab/优先级/来源/原文链接）
@@ -125,7 +125,8 @@ python scripts/build_html.py --articles-dir output/第3周
 | --- | --- | --- |
 | fetch_pool.py | `--keywords`,`--group` | 直接给关键词（用户提供）/ 统一分组 |
 | | `--kw-file` | 从关键词清单 .md 读取 |
-| | `--pool-url` / `--data` | 资源池地址（默认 workbuddy.link）/ 数据文件 |
+| | `--file-id` / `--sheet-id` | 金山多维表文件 ID（默认 WPS资源池 `Rip7ZFJaJrM9wK93jQop1xyuEZfz4y28u`）/ sheet ID |
+| | `--pool-url` / `--data` | 回退资源池 JSON 地址（默认不用）/ 数据文件路径 |
 | | `--cache` / `--refresh` | 本地缓存 / 强制刷新 |
 | | `--out` | 导出素材匹配 .md |
 | build_html.py | `--articles-dir` | 文章目录（含各 `<slug>/article.md`） |

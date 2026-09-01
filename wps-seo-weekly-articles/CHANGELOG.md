@@ -2,6 +2,13 @@
 
 本文记录 wps-seo-weekly-articles 技能的版本变更。每次发布前递增 `VERSION` 并在此追加记录，供订阅者查看更新内容。
 
+## 1.4.0 (2026-09-01)
+
+**资源池数据源切换为金山多维表**：素材采集默认从「WPS资源池」多维表（file_id=Rip7ZFJaJrM9wK93jQop1xyuEZfz4y28u）拉取，剔除原 workbuddy 资源库链接。
+- `scripts/fetch_pool.py`：默认数据源改为金山多维表（通过 wps_docs CLI 分页拉取，支持缓存与 `--file-id`/`--sheet-id` 覆盖）；`--pool-url` 降级为回退 JSON 地址（默认留空），workbuddy 引用已全部移除
+- 修复：多维表分页 token 以连字符开头（如 `-z`）时被 argparse 误判为选项导致中断，改用 `--page-token=<token>` 等号形式传参，确保全量拉取
+- `SKILL.md`：素材采集相关说明同步改为金山多维表（含参数速查 `--file-id`/`--sheet-id`）
+
 ## 1.2.1 (2026-08-28)
 
 **新增 CMS 热门标签库**：收录后台文章列表统计的 105 个真实标签（含频次）。
