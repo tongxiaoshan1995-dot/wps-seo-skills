@@ -2,6 +2,13 @@
 
 本文记录 wps-seo-weekly-articles 技能的版本变更。每次发布前递增 `VERSION` 并在此追加记录，供订阅者查看更新内容。
 
+## 1.5.0 (2026-09-01)
+
+**配图数据源接入 SEO 图片资源库（优先）+ WPS资源池（回退）**：图片获取从原来的“仅从资源池素材原文提取”升级为两级数据源，优先用现成稳定图，覆盖不足再回退原文提取。
+- `scripts/fetch_images.py`：新增第一数据源 **SEO 图片资源库**（金山多维表「SEO图片资源库」，默认 file_id=`chojYpQQMKYh`，含现成 图片url/图片描述/图片标签），按关键词匹配（标签>描述>标题）直接下载稳定图床链接（qpic/jsDelivr/lingxi）；图片库无命中时自动回退第二数据源 **WPS资源池**（默认 file_id=`cn0esSVVz7sD`）素材原文按来源优先级提取正文截图；新增 `--img-file-id`/`--img-sheet-id` 参数
+- `scripts/fetch_pool.py`：默认资源池 file_id 更新为用户实际使用的 `cn0esSVVz7sD`（含全部 4785 篇，覆盖公众号/小绿书/社区/客服中心/学堂/灵犀文档）
+- `SKILL.md`：配图流程、参数速查、脚本说明同步改为“SEO图片资源库优先 → WPS资源池原文回退”
+
 ## 1.4.0 (2026-09-01)
 
 **资源池数据源切换为金山多维表**：素材采集默认从「WPS资源池」多维表（file_id=Rip7ZFJaJrM9wK93jQop1xyuEZfz4y28u）拉取，剔除原 workbuddy 资源库链接。

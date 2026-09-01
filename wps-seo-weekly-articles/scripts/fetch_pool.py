@@ -31,7 +31,7 @@ import sys
 import time
 
 # ============ 数据源：金山多维表（默认） ============
-DEFAULT_FILE_ID = "Rip7ZFJaJrM9wK93jQop1xyuEZfz4y28u"   # 金山多维表「WPS资源池」
+DEFAULT_FILE_ID = "cn0esSVVz7sD"   # 金山多维表「WPS资源池」
 DEFAULT_SHEET_ID = "1"
 
 # ============ 回退数据源：JSON 地址（可选） ============
