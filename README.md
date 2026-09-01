@@ -8,6 +8,7 @@
 wps-seo-skills/
 ├── wps-seo-weekly-articles/    # 按周批量生成 WPS SEO 图文文章并上传 CMS 草稿箱
 ├── wps-seo-weekly-keywords/    # 按周输出 WPS SEO 组别关键词规划
+├── wps-seo-article-review/     # 审查国内 SEO 文章是否合规、可发布（广告法/内容质量/规范/品牌）
 └── README.md
 ```
 
