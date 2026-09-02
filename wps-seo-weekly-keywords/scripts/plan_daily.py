@@ -214,21 +214,25 @@ def load_sem_words(path):
     return words
 
 
-def load_covered_titles(path=None):
-    """已覆盖标题：文件每行一个标题；缺省尝试从 CMS 拉取（8月已发布）。"""
+def load_covered_titles(path=None, cms_token=None):
+    """已覆盖标题：文件每行一个标题；缺省尝试从 CMS 拉取（8月已发布）。
+    token 优先取参数，其次环境变量 WPS_CMS_TOKEN；两者皆无则跳过拉取。"""
     titles = []
     if path and os.path.isfile(path):
         with open(path, "r", encoding="utf-8-sig") as f:
             titles = [l.strip() for l in f if l.strip()]
         return titles
+    token = cms_token or os.environ.get("WPS_CMS_TOKEN")
+    if not token:
+        sys.stderr.write("[warn] 未提供 CMS token（--cms-token 或环境变量 WPS_CMS_TOKEN），跳过已覆盖剔除\n")
+        return titles
     try:
         import requests
         BASE = "https://www.wps.cn/article/api"
-        TOKEN = os.environ.get("WPS_CMS_TOKEN", "577d46e585df4348975accca078a297c")
         page, size = 1, 50
         while True:
             r = requests.get(f"{BASE}/article/", params={
-                "page": page, "size": size, "status": 2, "access_token": TOKEN},
+                "page": page, "size": size, "status": 2, "access_token": token},
                 headers={"User-Agent": "Mozilla/5.0"}, timeout=30)
             d = r.json()
             data = d.get("data") or []
@@ -239,7 +243,6 @@ def load_covered_titles(path=None):
     except Exception as e:
         sys.stderr.write(f"[warn] 拉取已覆盖标题失败：{e}\n")
     return titles
-
 
 # 保底名额题材白名单：内容型题材必保底（Excel/PDF/word/WPS AI 等用户明确关注），
 # NAV（导航下载）不保底，只按推荐分自然参与
@@ -288,7 +291,8 @@ def main():
     ap.add_argument("--daily-csv", default=None)
     ap.add_argument("--theme", default=DEFAULT_THEME)
     ap.add_argument("--sem", default=None, help="SEM 词表 CSV/TXT")
-    ap.add_argument("--covered", default=None, help="已覆盖标题文件（每行一个）")
+    ap.add_argument("--covered", default=None, help="已覆盖标题文件（每行一个；缺省自动拉 CMS）")
+    ap.add_argument("--cms-token", default=None, help="CMS OpenAPI token（拉取已覆盖标题用；或设环境变量 WPS_CMS_TOKEN）")
     ap.add_argument("--state", default=None)
     ap.add_argument("--day", type=int)
     ap.add_argument("--total", type=int, default=30)
@@ -318,7 +322,7 @@ def main():
     else:
         print("[SEM] 未提供 SEM 词表，SEM 分=0（权重 20% 暂时空置）", file=sys.stderr)
 
-    covered_titles = load_covered_titles(args.covered)
+    covered_titles = load_covered_titles(args.covered, args.cms_token)
     covered_set = set()
     for t in covered_titles:
         if t:

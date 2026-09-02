@@ -75,7 +75,8 @@ python <技能>/scripts/plan_daily.py
 | `--xlsx PATH` | 关键词 Excel（指定时优先于内置 CSV；未指定自动定位最新 SEO关键词*.xlsx） |
 | `--theme PATH` | 题材热度 JSON（默认技能内置 `assets/data/theme_score.json`） |
 | `--sem PATH` | SEM 词表 CSV/TXT（每行一个词或 CSV 第一列；命中该词加权 20%） |
-| `--covered PATH` | 已覆盖标题文件（每行一个文章标题；未指定自动拉取 CMS 8 月已发布文章标题剔除已写词） |
+| `--covered PATH` | 已覆盖标题文件（每行一个文章标题；未指定自动拉取 CMS 已发布文章标题剔除已写词） |
+| `--cms-token TOKEN` | CMS OpenAPI token（拉取已覆盖标题用；或设环境变量 `WPS_CMS_TOKEN`，两者皆无则跳过自动拉取） |
 | `--state PATH` | 指定状态 JSON（默认 `<技能>/.wps_seo_state.json`） |
 | `--day N` | 手动指定第几天 |
 | `--total N` | 每日关键词总数（默认 30，范围 20~30） |
