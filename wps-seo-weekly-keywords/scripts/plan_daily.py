@@ -352,8 +352,12 @@ def main():
         else:
             covered_flag = kwl in covered_set
         k["covered"] = covered_flag
-        k["组别"] = cat
         k["题材"] = theme_for_word(k)
+        # 在线文档题材词归入功能词池（原在“云文档与在线办公”分类→通用词，
+        # 导致功能词保底白名单中的“在线文档”永远落空）
+        if cat == "通用词" and k["一级分类"] == "云文档与在线办公" and k["题材"] == "在线文档":
+            cat = "功能词"
+        k["组别"] = cat
         k["题材分"] = theme_score.get(k["题材"], 0.0)
         k["搜索量"] = max(k.get("月均搜索量", 0.0), k["百度PV"])
         k["SEM分"] = 1.0 if kw.lower() in sem_words else 0.0
@@ -454,20 +458,21 @@ def main():
     print(f"\n[状态] {state_path}", file=sys.stderr)
 
     if args.out:
-        with open(os.path.abspath(args.out), "w", encoding="utf-8") as f:
-            f.write("\n".join([
-                title,
-                f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}",
-                f"权重：搜索量{WEIGHTS['搜索量']} / 题材热度{WEIGHTS['题材热度']} / SEM{WEIGHTS['SEM']}",
-                "",
-                "| 策略组别 | 今日关键词 | 搜索量 | 题材 | 题材分 | SEM | 推荐分 | 搜索意图 |",
-                "| --- | --- | --- | --- | --- | --- | --- | --- |",
-            ]) + "\n")
-            with open(os.path.abspath(args.out), "a", encoding="utf-8") as f2:
-                for cat, kw, k in rows:
-                    f2.write(f"| {cat} | {kw['关键词']} | {kw['搜索量']:.0f} | {kw['题材']} | {kw['题材分']:.2f} | "
-                             f"{'✓' if kw['SEM分'] else ''} | {kw['推荐分']:.3f} | {INTENT[cat]} |\n")
-            print(f"[导出] {os.path.abspath(args.out)}", file=sys.stderr)
+        out_lines = [
+            title,
+            f"生成时间：{datetime.now().strftime('%Y-%m-%d %H:%M')}",
+            f"权重：搜索量{WEIGHTS['搜索量']} / 题材热度{WEIGHTS['题材热度']} / SEM{WEIGHTS['SEM']}",
+            "",
+            "| 策略组别 | 今日关键词 | 搜索量 | 题材 | 题材分 | SEM | 推荐分 | 搜索意图 |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for cat, kw, k in rows:
+            out_lines.append(
+                f"| {cat} | {kw['关键词']} | {kw['搜索量']:.0f} | {kw['题材']} | {kw['题材分']:.2f} | "
+                f"{'✓' if kw['SEM分'] else ''} | {kw['推荐分']:.3f} | {INTENT[cat]} |")
+        with open(os.path.abspath(args.out), "w", encoding="utf-8", newline="") as f:
+            f.write("\n".join(out_lines) + "\n")
+        print(f"[导出] {os.path.abspath(args.out)}", file=sys.stderr)
 
 
 if __name__ == "__main__":
