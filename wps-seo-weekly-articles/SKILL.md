@@ -159,9 +159,9 @@ python scripts/build_html.py --articles-dir output/第3周
 - `upload_cms.py` — 把渲染好的文章上传为 CMS 草稿（不发布，配图走图床 URL）
 
 ### references/
-- `group-mapping.md` — 10 策略组别 → 词库/资源池字段/落地页/写作侧重映射（写作前必读）
-- `style-guide.md` — CMS 独立站风格、官方口吻、去 AI 味检查清单、FAQ/配图规范、正文页 2666 结构、优质案例文风参考（写作时必读）
-- `article-template.md` — 文章目录与 frontmatter 约定、正文结构骨架、渲染方法（写作时必读）
+- `group-mapping.md` — 10 策略组别 → 词库/资源池字段/落地页/写作侧重映射，及**组别 → 内容策略模板映射表**（写作前必读）
+- `style-guide.md` — CMS 独立站风格、官方口吻、去 AI 味检查清单、**内容策略三档（高/中/低关联）写作要点**、FAQ/配图规范、正文页 2666 结构、优质案例文风参考（写作时必读）
+- `article-template.md` — 文章目录与 frontmatter 约定、**正文结构骨架三套模板（A高关联/B中关联/C低关联）**、渲染方法（写作时必读）
 - `cms-upload.md` — 上传 CMS 草稿箱的平台与操作说明（按用户指定平台维护）
 
 ### assets/
