@@ -60,6 +60,7 @@ python scripts/fetch_pool.py --keywords "WPS下载,PDF转Word" --group 格式转
 - 每篇一个文件夹 `output/第N周/<slug>/`，内含 `article.md`（frontmatter + Markdown 正文）与 `img/`（配图）
 - 结构必含：封面图（frontmatter `image`）→ 正文分段（每关键段落配图）→ FAQ（3–5 条）；标题写在 frontmatter（CMS Title 字段管理），正文页不渲染标题
 - 风格：CMS 独立站、官方口吻、500–2000 字、严格去 AI 味（逐条对照 style-guide 的检查清单 + **参考 `assets/examples/` 下 4 篇优质案例文风**：短疑问句连击开头、痛点场景+具体案例、功能价值优先入口收尾；不学文末互动）
+- **合规前置自查**：每篇写完后逐条对照 style-guide 第 8 节「禁用清单（发布前红线）」（含夸大 AI 能力、竞品对比、数据出处、会员体系不展开、绝对化用语等），产出即达标，避免发布后返工
 - 配图：**一律使用真实产品截图**（禁用 AI 示意图，规范见 style-guide 第 7 节）——先跑 `scripts/fetch_images.py` 按关键词匹配 **SEO 图片资源库**（金山多维表「SEO图片资源库」，file_id=`chojYpQQMKYh`，含现成 图片url/描述/标签），命中即用稳定图床链接；图片库无命中时自动回退到 **WPS资源池** 素材原文按来源优先级提取真实界面截图；仍提取不到再用 browser 打开 sourceUrl 截图兑底；封面图在 frontmatter `image` 声明，正文图用 `![alt](img/xxx.jpg)` 引用，alt 含关键词
 - **正文页不含下载 CTA**（结构最终参照草稿 2666：封面图 + 图文 + FAQ）
 - **智能标签**：Agent 按文章内容/关键词/组别生成 3-5 个标签，写入 frontmatter `tags`；**优先从 `references/tag-library.md` 的 105 个 CMS 真实热门标签挑选**（结构化数据 `assets/data/tags.json`）；`upload_cms` 自动写入 CMS `Tags` 字段（后台智能标签为界面功能，OpenAPI 不提供，本方案为等价自动打标）
