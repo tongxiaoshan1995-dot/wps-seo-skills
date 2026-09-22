@@ -1,0 +1,4 @@
+【文风参考案例 4】《用WPS AI，给办公加加速！》（WPS官方公众号）
+链接: https://mp.weixin.qq.com/s?__biz=MzA4MDA1ODI0OQ==&mid=2649970873&idx=1&sn=a408e56d54deae5b76943373d2bdfef6&chksm=87adfa5fb0da73497894b3867493e218ca1f00039b0c69ca1f5300349cb33ff838ac0fc6786a
+说明：本链接为微信公众号文章，需微信客户端环境打开，直接抓取会触发环境验证。
+内容与金山文档《用WPS AI，给办公加加速！》同主题（WPS AI 能力介绍），正文见 case-01。

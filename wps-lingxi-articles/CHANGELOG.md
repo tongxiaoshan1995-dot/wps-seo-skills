@@ -1,0 +1,103 @@
+# CHANGELOG
+
+本文记录 wps-lingxi-articles 技能的版本变更。每次发布前递增 `VERSION` 并在此追加记录，供订阅者查看更新内容。
+
+## 1.0.0 (2026-09-22)
+
+**全新技能（从 wps-seo-weekly-articles v2.1.0 复制改造）**：题材聚焦 **WPS 灵犀**，正文介绍“用 WPS 灵犀完成 xxx”。
+- 命名：`wps-lingxi-articles`
+- 流程不变：关键词 → 资源池取灵犀/AI 资料（不足则网络搜索）→ 写作 → 渲染 HTML → 上传 CMS 草稿箱（不发布）
+- `SKILL.md`：description/概述/工作流全面灵犀化；正文题材定位“用 WPS 灵犀完成 xxx”
+- `references/group-mapping.md`：组别写作侧重转向灵犀能力（AI 写作/表格/PPT/PDF/阅读/数据分析）
+- `references/style-guide.md`：官方口吻聚焦 WPS 灵犀；文风案例与数字示例补充灵犀场景
+- `references/article-template.md`：模板 A/B/C 示例改为灵犀操作路径
+- `scripts/fetch_pool.py`：`BRAND_WORDS` 补充“灵犀”，关键词核心提取更准
+- `scripts/upload_cms.py`：沿用原有“灵犀→WPS AI”分类映射，无需改动
+
+ wps-seo-weekly-articles 技能的版本变更。每次发布前递增 `VERSION` 并在此追加记录，供订阅者查看更新内容。
+
+## 2.1.0 (2026-09-08)
+
+**合规前置（发布前红线固化到生成侧）**：把原属于审查技能的广告法高风险项前置到写作阶段，让稿子“写出来即合规”，避免发布后返工。与 article-review（v1.1.0）的「来源分流 + 红线快检」联动。
+- `references/style-guide.md`：第 8 节「禁用清单」扩展为**发布前红线逐条自查**，新增——夸大 AI 能力（“100%准确”“完全替代人工”等）、竞品对比红线（不点名/不出Logo/不用可识别黑话/只比不踩）、数据/排名/评测须可追溯（AI 数据不当权威背书）、**会员体系不主动展开**（不铺陈三段等级结构，涉及付费仅指向官方会员页）、AI 示意图配图与 alt 无关键词
+- `SKILL.md`：第 3 步写作新增“合规前置自查”，要求每篇产出后逐条对照 style-guide 第 8 节再交付
+
+## 2.0.0 (2026-09-07)
+
+**内容策略三档（关联度）重构 + 去除会员/价格题材相关内容**：与 keywords 技能（v4.0.0）联动，解决两周 60 篇文章主题雷同、互相抢流量的问题——场景词/方法论词不再每篇硬绑 WPS。
+- `references/article-template.md`：正文结构骨架重构为**三套模板**——模板A（高关联，整篇WPS，品牌/价格/下载/功能/AI认知词）、模板B（中关联，通用+WPS章节，教程/故障/模板/格式转换/场景词，默认档）、模板C（低关联，方法论轻带，纯方法论词）；frontmatter 新增 `content_strategy` 字段，新增「内容策略判定」表
+- `references/style-guide.md`：新增第 6 节「内容策略（关联度三档）写作要点」，说明各档写法与判定，明确**场景/方法论词不硬绑 WPS，只在某章节覆盖**
+- `references/group-mapping.md`：新增「组别 → 内容策略模板映射表」（含价格购买组备注：会员/价格题材已在 keywords 技能剔除）
+- `SKILL.md`：第 3 步写作新增 `content_strategy` 三档判定与写入说明，references 资源清单同步
+- 写作侧去除与会员/价格强绑的整篇营销写法，改为客观中/低关联表达
+
+## 1.5.0 (2026-09-01)
+
+**配图数据源接入 SEO 图片资源库（优先）+ WPS资源池（回退）**：图片获取从原来的“仅从资源池素材原文提取”升级为两级数据源，优先用现成稳定图，覆盖不足再回退原文提取。
+- `scripts/fetch_images.py`：新增第一数据源 **SEO 图片资源库**（金山多维表「SEO图片资源库」，默认 file_id=`chojYpQQMKYh`，含现成 图片url/图片描述/图片标签），按关键词匹配（标签>描述>标题）直接下载稳定图床链接（qpic/jsDelivr/lingxi）；图片库无命中时自动回退第二数据源 **WPS资源池**（默认 file_id=`cn0esSVVz7sD`）素材原文按来源优先级提取正文截图；新增 `--img-file-id`/`--img-sheet-id` 参数
+- `scripts/fetch_pool.py`：默认资源池 file_id 更新为用户实际使用的 `cn0esSVVz7sD`（含全部 4785 篇，覆盖公众号/小绿书/社区/客服中心/学堂/灵犀文档）
+- `SKILL.md`：配图流程、参数速查、脚本说明同步改为“SEO图片资源库优先 → WPS资源池原文回退”
+
+## 1.4.0 (2026-09-01)
+
+**资源池数据源切换为金山多维表**：素材采集默认从「WPS资源池」多维表（file_id=Rip7ZFJaJrM9wK93jQop1xyuEZfz4y28u）拉取，剔除原 workbuddy 资源库链接。
+- `scripts/fetch_pool.py`：默认数据源改为金山多维表（通过 wps_docs CLI 分页拉取，支持缓存与 `--file-id`/`--sheet-id` 覆盖）；`--pool-url` 降级为回退 JSON 地址（默认留空），workbuddy 引用已全部移除
+- 修复：多维表分页 token 以连字符开头（如 `-z`）时被 argparse 误判为选项导致中断，改用 `--page-token=<token>` 等号形式传参，确保全量拉取
+- `SKILL.md`：素材采集相关说明同步改为金山多维表（含参数速查 `--file-id`/`--sheet-id`）
+
+## 1.2.1 (2026-08-28)
+
+**新增 CMS 热门标签库**：收录后台文章列表统计的 105 个真实标签（含频次）。
+- `references/tag-library.md`：按高频/中频/低频分组的标签参考文档
+- `assets/data/tags.json`：结构化标签数据（name + count）
+- 自动化打标签时优先从本库挑选，贴合站点现状（style-guide / SKILL 已引用）
+
+## 1.2.0 (2026-08-28)
+
+**智能标签**：文章生成时自动打对应标签。
+- 新增文风案例 5《AI 功能全解析：文字、表格、PPT、PDF 都能怎么用（2026新版）》（WPS 官网，assets/examples/case-05*）
+- Agent 写作时按文章内容/关键词/组别生成 3-5 个标签，写入 frontmatter `tags`（可参考 CMS 热门标签库：办公效率/表格函数/Excel/PPT/WPS Office/在线文档 等）
+- `upload_cms.py`：frontmatter 解析支持 `tags` 列表，上传时自动写入 CMS `Tags` 字段（优先级：frontmatter tags > 关键词 > --tags）
+- 说明：CMS 后台“智能标签”为界面功能，OpenAPI 无对应接口；本实现为等价自动打标
+
+## 1.1.3 (2026-08-28)
+
+**修复**：--update 覆盖改用系统命令（robocopy/cp），临时目录清理兼容沙箱限制，避免 Python 删除被拦截导致更新失败。
+
+
+## 1.1.1 (2026-08-28)
+
+**修复**：更新检测改用 git 权威通道（`git ls-remote` 对比 HEAD）判断，绕开 jsDelivr CDN 缓存延迟导致的漏检；首次运行也对比 VERSION（防止装了旧包不提示）。
+
+
+## 1.1.0 (2026-08-28)
+
+**机制增强**：加入“自动更新提醒”——每次调用本技能先执行 `update_check.py --force`，GitHub 有新版本时向用户提示并支持一键更新（见 SKILL.md 第 0 步）。
+- 工作流新增第 0 步：自动更新检查（24h 缓存，几乎无感）
+- 更新检查章节改写为“用户灵犀如何收到更新提醒”
+- 版本仓库统一为多技能仓库 `tongxiaoshan1995-dot/wps-seo-skills`
+
+
+## 1.0.0 (2026-08-27)
+
+首次正式发布，建立 GitHub 版本仓库 + 更新检查机制。
+
+**工作流**：5 步（接收用户关键词 → 采素材 → 写作 → 渲染 → 上传 CMS 草稿箱不发布）。
+
+**正文结构**（参照草稿 2666）：封面图 + 图文 + FAQ；不含组别 tab、H1 标题、日期、参考来源、下载 CTA；标题由 CMS Title 字段管理。
+
+**素材检索**：
+- 穷尽检索（全字段 title + targetKeywords + notes + sourceUrl 扫描）
+- 来源优先级：WPS官方公众号 > 小绿书 > WPS社区 > WPS客服中心 > WPS学堂，同分再按 P0/P1/P2
+
+**文风**：参考 assets/examples/ 4 篇优质案例（短疑问句连击开头、痛点场景+具体案例、功能价值优先入口收尾、短句短段）；不学文末互动。
+
+**脚本**：
+- `fetch_pool.py`：抓资源池 + 穷尽匹配 + 来源优先级排序
+- `build_html.py`：渲染 HTML 图文单页（2666 结构）+ 周目录页
+- `push_images.py`：git 方式传图到 GitHub 图床 + image-map.json
+- `upload_cms.py`：上传 CMS 草稿（Status=0 不发布；封面/正文走图床 URL，CMS 自动转存）
+- `update_check.py`：本版本起内置，检查 GitHub 仓库新版本 + 一键更新
+
+**凭证说明**：CMS access_token 与 GitHub PAT 均不落盘，使用方自行在命令行传入。
+

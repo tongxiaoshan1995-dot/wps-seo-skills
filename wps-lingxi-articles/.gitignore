@@ -1,0 +1,14 @@
+# 运行态 / 本地缓存（不进版本仓库）
+__pycache__/
+*.pyc
+.rundata/
+.remote_head
+
+# 本地上传产物
+output/
+*.skill
+image-map.json
+
+# 系统文件
+Thumbs.db
+.DS_Store

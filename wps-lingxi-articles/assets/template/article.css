@@ -1,0 +1,162 @@
+/* ============================================================
+   WPS SEO 周度文章 · HTML 图文单页样式（CMS 独立站风格）
+   品牌主色 #0061ff（WPS 蓝），正文以阅读体验为先
+   ============================================================ */
+:root {
+  --brand: #0061ff;
+  --brand-dark: #0047c2;
+  --ink: #1f2329;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --bg: #f5f6f8;
+  --card: #ffffff;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", Arial, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.8;
+  font-size: 16px;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
+
+/* 顶栏 */
+.site-header {
+  background: #fff;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.logo {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--brand);
+  text-decoration: none;
+}
+.nav a, .nav .cur {
+  margin-left: 20px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nav a:hover { color: var(--brand); }
+
+/* 文章主体 */
+.post {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 32px 40px 40px;
+  margin: 16px 0 24px;
+}
+.cover { margin: 20px 0; }
+.cover img {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+}
+
+.post-body h2 { font-size: 22px; margin: 30px 0 12px; padding-left: 12px; border-left: 4px solid var(--brand); }
+.post-body h3 { font-size: 18px; margin: 22px 0 8px; }
+.post-body p { margin: 12px 0; }
+.post-body img {
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  margin: 8px 0;
+  display: block;
+}
+.post-body a { color: var(--brand); }
+.post-body ul, .post-body ol { padding-left: 24px; }
+.post-body li { margin: 6px 0; }
+.post-body blockquote {
+  border-left: 4px solid var(--brand);
+  background: #f6f9ff;
+  margin: 16px 0;
+  padding: 10px 18px;
+  color: #45506a;
+  border-radius: 0 8px 8px 0;
+}
+.post-body table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
+.post-body th, .post-body td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; }
+.post-body th { background: #f7f8fa; }
+.post-body code { background: #f3f4f6; padding: 1px 6px; border-radius: 4px; font-size: 14px; }
+.post-body hr { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+
+/* FAQ 手风琴 */
+.faq { margin: 28px 0 0; }
+.faq h2 { font-size: 22px; }
+.faq-item { border: 1px solid var(--line); border-radius: 10px; margin: 12px 0; overflow: hidden; }
+.faq-q {
+  width: 100%;
+  background: #fff;
+  border: none;
+  padding: 14px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+}
+.faq-q:hover { background: #fafbff; }
+.faq-no {
+  background: var(--brand);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex: none;
+}
+.faq-icon { margin-left: auto; color: var(--brand); font-size: 20px; }
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .25s ease, padding .25s ease;
+  padding: 0 18px;
+  color: #45506a;
+}
+
+/* 页脚 */
+.site-footer { border-top: 1px solid var(--line); background: #fff; }
+.site-footer .wrap { padding: 18px 20px; color: var(--muted); font-size: 13px; }
+
+/* 索引页 */
+.index-hero { padding: 32px 0 8px; }
+.index-hero h1 { font-size: 30px; margin: 0 0 6px; }
+.index-hero p { color: var(--muted); margin: 0; }
+.group { margin: 24px 0; }
+.group h2 {
+  font-size: 20px;
+  border-left: 4px solid var(--brand);
+  padding-left: 12px;
+  margin: 0 0 12px;
+}
+.cards { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.card a { display: block; padding: 16px 18px; text-decoration: none; color: var(--ink); }
+.card a:hover { background: #fafbff; border-color: var(--brand); }
+.card h3 { margin: 0 0 6px; font-size: 16px; line-height: 1.5; }
+.card p { margin: 0; color: var(--muted); font-size: 13px; }
+
+/* 移动端 */
+@media (max-width: 640px) {
+  .post { padding: 20px 18px 28px; }
+  .wrap { padding: 0 14px; }
+}
