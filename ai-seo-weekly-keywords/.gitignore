@@ -1,0 +1,10 @@
+# 运行态 / 本地缓存（不进版本仓库）
+__pycache__/
+*.pyc
+.rundata/
+.remote_head
+.ai_seo_state.json
+
+# 词库备份（不进版本仓库）
+_bak/
+assets/data/_bak/
